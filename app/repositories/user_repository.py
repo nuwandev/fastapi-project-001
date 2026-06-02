@@ -7,18 +7,18 @@ class UserRepository:
     self.session = session
 
   async def create_user(self, name: str, email: str):
-    user = User(name=name, email=email)
+      user = User(name=name, email=email)
 
-    self.session.add(user)
-    await self.session.commit()
-    await self.session.refresh(user)
-
-    return user
+      self.session.add(user)
+      return user
   
   async def get_users(self):
     result = await self.session.execute(select(User))
-    return result.scalar().all()
+    return result.scalars().all()
   
   async def get_user_by_id(self, user_id: int):
-    result = await self.session.execute(select(User).where(User.id == user_id))
+    result = await self.session.execute(
+      select(User).where(User.id == user_id)
+    )
+
     return result.scalar_one_or_none()
