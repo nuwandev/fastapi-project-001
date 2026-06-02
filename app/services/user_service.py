@@ -1,4 +1,5 @@
 from app.repositories.user_repository import UserRepository
+from app.core.errors import NotFoundError
 class UserService:
   def __init__(self, repo: UserRepository, session):
     self.repo = repo
@@ -16,4 +17,9 @@ class UserService:
     return await self.repo.get_users()
   
   async def get_user_by_id(self, user_id: int):
-    return await self.repo.get_user_by_id(user_id)
+    user = await self.repo.get_user_by_id(user_id)
+
+    if not user:
+      raise NotFoundError("User not found")
+    
+    return user
