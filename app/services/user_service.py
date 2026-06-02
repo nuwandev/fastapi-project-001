@@ -1,9 +1,10 @@
+from app.repositories.user_repository import UserRepository
 class UserService:
-  def __init__(self, repo):
+  def __init__(self, repo: UserRepository):
     self.repo = repo
 
-  async def create_user(self, data):
-    return await self.repo.create_user(data)
+  async def create_user(self, name: str, email: str):
+    return await self.repo.create_user(name, email)
   
   async def get_users(self):
     return await self.repo.get_users()
