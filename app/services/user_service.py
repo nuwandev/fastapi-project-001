@@ -1,12 +1,13 @@
 from app.repositories.user_repository import UserRepository
 from app.core.errors import NotFoundError
+from app.schemas.user_schema import UserCreate
 class UserService:
   def __init__(self, repo: UserRepository, session):
     self.repo = repo
     self.session = session
 
-  async def create_user(self, name: str, email: str):
-    user = self.repo.create_user(name, email)
+  async def create_user(self, user: UserCreate):
+    user = await self.repo.create_user(name=user.name, email=user.email)
 
     await self.session.commit()
     await self.session.refresh(user)
